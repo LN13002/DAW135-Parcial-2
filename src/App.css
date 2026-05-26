@@ -1,5 +1,9 @@
 /* ─── Base overrides (after Bulma) ───────────────────────── */
-body,
+body {
+  background-color: var(--cl-surface) !important;
+  padding-top: 64px !important; /* Bulma resets padding-top; restore it for fixed navbar */
+}
+
 #root {
   background-color: var(--cl-surface) !important;
 }
@@ -788,34 +792,36 @@ body,
     padding: 0 1rem;
   }
 
-  .app-navbar .app-logo {
-    font-size: 1.1rem;
+  /* Hero: flujo normal, sin flex centering que corta el ícono */
+  .hero-screen {
+    display: block;
+    padding: 2.5rem 1.25rem 3rem;
+    min-height: auto;
   }
 
-  /* Hero */
-  .hero-screen {
-    padding: 2rem 1rem 2.5rem;
-    align-items: flex-start;
+  .hero-content {
+    max-width: 100%;
   }
 
   .hero-icon {
-    font-size: 3rem;
+    font-size: 2.75rem;
     margin-bottom: 0.75rem;
   }
 
   .hero-title {
-    font-size: 1.875rem;
+    font-size: 1.75rem;
     letter-spacing: -0.015em;
+    margin-bottom: 0.625rem;
   }
 
   .hero-sub {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     margin-bottom: 1.25rem;
   }
 
   /* Stats en una sola fila compacta */
   .hero-stats {
-    gap: 0.875rem;
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
   }
 
@@ -833,7 +839,7 @@ body,
 
   /* Search */
   .hero-search-form {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .hero-search-wrapper .search-input {
@@ -842,9 +848,10 @@ body,
   }
 
   .hero-search-form .btn-primary {
-    padding: 0.75rem 1.125rem;
+    padding: 0.75rem 1rem;
     font-size: 0.9375rem;
     border-radius: 0.875rem;
+    white-space: nowrap;
   }
 
   /* Categorías: 2 columnas compactas */
@@ -858,7 +865,7 @@ body,
   }
 
   .category-icon {
-    font-size: 1.625rem;
+    font-size: 1.5rem;
   }
 
   .category-label {
