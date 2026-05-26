@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# Parcial 2 - DAW 135
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web construida con React, TypeScript, Bulma CSS y Vite, que consume la API pública de Open Library para buscar y mostrar información de libros.
 
-Currently, two official plugins are available:
+## Tecnologías principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React**: librería para crear la interfaz de usuario.
+- **TypeScript**: tipado estático para mayor seguridad y claridad del código.
+- **Vite**: herramienta de compilación y desarrollo rápido.
+- **Bulma CSS**: framework CSS ligero para diseño responsivo.
+- **Open Library API**: fuente de datos para búsquedas y detalles de libros.
 
-## React Compiler
+## Estructura del proyecto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/`
+  - `main.tsx`: punto de entrada de la aplicación.
+  - `App.tsx`: componente principal que organiza la aplicación.
+  - `index.css` / `App.css`: estilos globales y específicos.
+  - `components/`: componentes reutilizables de UI.
+    - `BookCard.tsx`: tarjeta de libro individual.
+    - `BookGrid.tsx`: rejilla para mostrar los libros.
+    - `ErrorMessage.tsx`: componente para mostrar errores.
+    - `LoadingSpinner.tsx`: indicador de carga.
+    - `Navbar.tsx`: barra de navegación principal.
+    - `Pagination.tsx`: paginación de resultados.
+    - `SearchBar.tsx`: barra de búsqueda de libros.
+    - `Sidebar.tsx`: barra lateral con filtros o información adicional.
+    - `StarRating.tsx`: calificación de libros con estrellas.
+- `public/`: activos estáticos públicos.
+- `package.json`: dependencias y scripts del proyecto.
+- `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`: configuración de TypeScript.
+- `vite.config.ts`: configuración de Vite.
+- `eslint.config.js`: reglas de linting para el proyecto.
 
-## Expanding the ESLint configuration
+## Qué hace esta app
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Permite buscar libros usando la API de Open Library.
+- Muestra resultados en tarjetas con información básica.
+- Incluye paginación para navegar entre páginas de resultados.
+- Maneja estados de carga y errores.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Cómo ejecutar el proyecto
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Instalar dependencias:
+   ```bash
+   npm install
+   ```
+2. Iniciar el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+3. Abrir la URL que indica Vite en el navegador.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Notas
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- El diseño utiliza Bulma CSS para estilos rápidos y una experiencia responsiva.
+- La aplicación está basada en datos de Open Library, por lo que la información mostrada depende de la respuesta de esa API.
