@@ -103,7 +103,7 @@ function App() {
   const handleApplyFilters = () => setPage(1)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+    <div className={`app-shell ${hasSearched ? 'has-results' : 'is-home'}`}>
       <Navbar onSearch={handleSearch} onHome={handleHome} loading={loading} />
 
       <div style={{ flex: 1 }}>
@@ -138,6 +138,7 @@ function App() {
                 <div className="search-wrapper hero-search-wrapper">
                   <span className="material-symbols-outlined search-icon">search</span>
                   <input
+                    id="hero-search"
                     className="search-input"
                     type="text"
                     placeholder="Ej: Harry Potter, Gabriel García Márquez..."

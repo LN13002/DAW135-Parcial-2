@@ -8,6 +8,7 @@ interface NavbarProps {
 
 function Navbar({ onSearch, onHome, loading }: NavbarProps) {
   const [draft, setDraft] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -17,7 +18,16 @@ function Navbar({ onSearch, onHome, loading }: NavbarProps) {
   const handleHome = (e: React.MouseEvent) => {
     e.preventDefault()
     setDraft('')
+    setMobileMenuOpen(false)
     onHome()
+  }
+
+  const focusVisibleSearch = () => {
+    setMobileMenuOpen(false)
+    requestAnimationFrame(() => {
+      const search = document.getElementById('hero-search') ?? document.getElementById('navbar-search')
+      search?.focus()
+    })
   }
 
   return (
@@ -25,6 +35,27 @@ function Navbar({ onSearch, onHome, loading }: NavbarProps) {
       <div className="navbar-brand">
         <a href="#" className="app-logo" onClick={handleHome}>OpenLibrary</a>
         <a href="#" className="nav-link is-active" onClick={handleHome}>Explorar</a>
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+        >
+          <span className="material-symbols-outlined">{mobileMenuOpen ? 'close' : 'menu'}</span>
+        </button>
+      </div>
+
+      <div id="mobile-navigation" className={`mobile-navigation ${mobileMenuOpen ? 'is-open' : ''}`}>
+        <a href="#" className="mobile-nav-link" onClick={handleHome}>
+          <span className="material-symbols-outlined">explore</span>
+          Explorar
+        </a>
+        <button type="button" className="mobile-nav-link" onClick={focusVisibleSearch}>
+          <span className="material-symbols-outlined">search</span>
+          Buscar
+        </button>
       </div>
 
       <div className="navbar-menu">
@@ -36,6 +67,7 @@ function Navbar({ onSearch, onHome, loading }: NavbarProps) {
             <div className="search-wrapper">
               <span className="material-symbols-outlined search-icon">search</span>
               <input
+                id="navbar-search"
                 className="search-input"
                 type="text"
                 placeholder="Buscar libros, autores..."
