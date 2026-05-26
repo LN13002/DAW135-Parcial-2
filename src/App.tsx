@@ -222,7 +222,7 @@ function App() {
         <div className="footer-inner">
           <div>
             <p className="footer-brand">OpenLibrary</p>
-            <p className="footer-copy">© 2025 OpenLibrary · Conocimiento libre y accesible</p>
+            <p className="footer-copy">© 2026 OpenLibrary · Conocimiento libre y accesible</p>
           </div>
           <div style={{ textAlign: 'center' }}>
             <p className="footer-credit">Made with ♥ by LN13002 (Kevin Lemus)</p>
