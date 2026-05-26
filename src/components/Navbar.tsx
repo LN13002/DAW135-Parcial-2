@@ -33,7 +33,7 @@ function Navbar({ onSearch, onHome, loading }: NavbarProps) {
   return (
     <nav className="navbar app-navbar">
       <div className="navbar-brand">
-        <a href="#" className="app-logo" onClick={handleHome}>OpenLibrary</a>
+        <a href="#" className="app-logo" onClick={handleHome}>LibroNauta</a>
         <a href="#" className="nav-link is-active" onClick={handleHome}>Explorar</a>
         <button
           type="button"

@@ -100,8 +100,9 @@ body {
   width: 100%;
 }
 
-.hero-search-wrapper {
+.search-wrapper.hero-search-wrapper {
   flex: 1;
+  max-width: none;
   min-width: 0;
 }
 

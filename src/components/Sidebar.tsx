@@ -5,6 +5,8 @@ interface SidebarProps {
   onSubjectsChange: (subjects: string[]) => void
   decade: string
   onDecadeChange: (decade: string) => void
+  language: string
+  onLanguageChange: (language: string) => void
   onApply: () => void
 }
 
@@ -17,16 +19,36 @@ const SUBJECT_OPTIONS = [
 ]
 
 const DECADE_OPTIONS = [
-  { label: 'Todos los años',      value: '' },
-  { label: '2020 – 2024',         value: 'first_publish_year:[2020 TO 2024]' },
-  { label: '2010 – 2019',         value: 'first_publish_year:[2010 TO 2019]' },
-  { label: '2000 – 2009',         value: 'first_publish_year:[2000 TO 2009]' },
-  { label: '1990 – 1999',         value: 'first_publish_year:[1990 TO 1999]' },
-  { label: '1980 – 1989',         value: 'first_publish_year:[1980 TO 1989]' },
-  { label: 'Antes de 1980',       value: 'first_publish_year:[* TO 1979]' },
+  { label: 'Todos los años', value: '' },
+  { label: '2020 - 2024', value: 'first_publish_year:[2020 TO 2024]' },
+  { label: '2010 - 2019', value: 'first_publish_year:[2010 TO 2019]' },
+  { label: '2000 - 2009', value: 'first_publish_year:[2000 TO 2009]' },
+  { label: '1990 - 1999', value: 'first_publish_year:[1990 TO 1999]' },
+  { label: '1980 - 1989', value: 'first_publish_year:[1980 TO 1989]' },
+  { label: 'Antes de 1980', value: 'first_publish_year:[* TO 1979]' },
 ]
 
-function Sidebar({ sortBy, onSortChange, subjects, onSubjectsChange, decade, onDecadeChange, onApply }: SidebarProps) {
+const LANGUAGE_OPTIONS = [
+  { label: 'Todos los idiomas', value: '' },
+  { label: 'Español', value: 'spa' },
+  { label: 'Inglés', value: 'eng' },
+  { label: 'Francés', value: 'fre' },
+  { label: 'Portugués', value: 'por' },
+  { label: 'Alemán', value: 'ger' },
+  { label: 'Italiano', value: 'ita' },
+]
+
+function Sidebar({
+  sortBy,
+  onSortChange,
+  subjects,
+  onSubjectsChange,
+  decade,
+  onDecadeChange,
+  language,
+  onLanguageChange,
+  onApply,
+}: SidebarProps) {
   const toggleSubject = (query: string) => {
     onSubjectsChange(
       subjects.includes(query) ? subjects.filter((s) => s !== query) : [...subjects, query]
@@ -58,6 +80,21 @@ function Sidebar({ sortBy, onSortChange, subjects, onSubjectsChange, decade, onD
         </div>
       </div>
 
+      {/* Idioma */}
+      <div className="sidebar-section">
+        <div className="sidebar-section-header">
+          <span className="material-symbols-outlined">language</span>
+          Idioma
+        </div>
+        <div className="sidebar-items">
+          <select value={language} onChange={(e) => onLanguageChange(e.target.value)}>
+            {LANGUAGE_OPTIONS.map(({ label, value }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Período */}
       <div className="sidebar-section">
         <div className="sidebar-section-header">
@@ -81,10 +118,9 @@ function Sidebar({ sortBy, onSortChange, subjects, onSubjectsChange, decade, onD
         </div>
         <div className="sidebar-items">
           <select value={sortBy} onChange={(e) => onSortChange(e.target.value)}>
+            <option value="">Relevancia</option>
             <option value="new">Más recientes</option>
             <option value="old">Más antiguos</option>
-            <option value="rating">Más populares</option>
-            <option value="title">Título A-Z</option>
           </select>
         </div>
       </div>

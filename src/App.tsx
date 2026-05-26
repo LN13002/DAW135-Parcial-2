@@ -12,7 +12,6 @@ import ErrorMessage from './components/ErrorMessage'
 import type { Book } from './components/BookCard'
 
 const API_BASE = 'https://openlibrary.org/search.json'
-const FETCH_LIMIT = 24
 
 const CATEGORIES = [
   { label: 'Literatura',  query: 'literature',  icon: 'auto_stories',    color: '#4355b9', bg: '#dee0ff' },
@@ -31,6 +30,15 @@ const STATS = [
   { icon: 'language',  value: '100+', label: 'idiomas' },
 ]
 
+const LANGUAGE_LABELS: Record<string, string> = {
+  spa: 'Español',
+  eng: 'Inglés',
+  fre: 'Francés',
+  por: 'Portugués',
+  ger: 'Alemán',
+  ita: 'Italiano',
+}
+
 interface SearchResponse {
   numFound: number
   docs: Book[]
@@ -43,9 +51,10 @@ function App() {
   const [query, setQuery]               = useState('')
   const [page, setPage]                 = useState(1)
   const [totalResults, setTotalResults] = useState(0)
-  const [sortBy, setSortBy]             = useState('new')
+  const [sortBy, setSortBy]             = useState('')
   const [subjects, setSubjects]         = useState<string[]>([])
   const [decade, setDecade]             = useState('')
+  const [language, setLanguage]         = useState('')
 
   const PAGE_SIZE  = 8
   const totalPages = Math.ceil(totalResults / PAGE_SIZE)
@@ -60,14 +69,20 @@ function App() {
 
       try {
         const subjectPart = subjects.map((s) => `subject:${s}`).join(' ')
-        const fullQuery   = [query, subjectPart, decade].filter(Boolean).join(' ')
+        const languagePart = language ? `language:${language}` : ''
+        const fullQuery = [query, subjectPart, decade, languagePart].filter(Boolean).join(' ')
 
         const response = await axios.get<SearchResponse>(API_BASE, {
-          params: { q: fullQuery, limit: FETCH_LIMIT, page, sort: sortBy, lang: 'spa' },
+          params: {
+            q: fullQuery,
+            fields: 'key,title,author_name,cover_i,first_publish_year,subject,ratings_average,ratings_count,edition_count',
+            limit: PAGE_SIZE,
+            page,
+            ...(sortBy ? { sort: sortBy } : {}),
+          },
         })
 
-        const withCovers = response.data.docs.filter((b) => b.cover_i)
-        setBooks(withCovers)
+        setBooks(response.data.docs.filter((book) => book.cover_i))
         setTotalResults(response.data.numFound)
       } catch (err) {
         setError(
@@ -81,7 +96,7 @@ function App() {
     }
 
     fetchBooks()
-  }, [query, page, sortBy, subjects, decade, hasSearched])
+  }, [query, page, sortBy, subjects, decade, language, hasSearched])
 
   const handleSearch = (newQuery: string) => {
     setQuery(newQuery)
@@ -174,11 +189,25 @@ function App() {
           <div className="app-container">
             {!loading && <Sidebar
               sortBy={sortBy}
-              onSortChange={setSortBy}
+              onSortChange={(value) => {
+                setSortBy(value)
+                setPage(1)
+              }}
               subjects={subjects}
-              onSubjectsChange={setSubjects}
+              onSubjectsChange={(value) => {
+                setSubjects(value)
+                setPage(1)
+              }}
               decade={decade}
-              onDecadeChange={setDecade}
+              onDecadeChange={(value) => {
+                setDecade(value)
+                setPage(1)
+              }}
+              language={language}
+              onLanguageChange={(value) => {
+                setLanguage(value)
+                setPage(1)
+              }}
               onApply={handleApplyFilters}
             />}
 
@@ -190,11 +219,12 @@ function App() {
                     {totalResults.toLocaleString()} libros encontrados para &ldquo;{query}&rdquo;
                   </p>
                 </div>
-                {subjects.length > 0 && (
+                {(subjects.length > 0 || language) && (
                   <div className="results-tags">
                     {subjects.map((s) => (
                       <span key={s} className="result-tag teal">{s}</span>
                     ))}
+                    {language && <span className="result-tag teal">{LANGUAGE_LABELS[language]}</span>}
                   </div>
                 )}
               </div>
@@ -222,8 +252,8 @@ function App() {
       <footer className="app-footer">
         <div className="footer-inner">
           <div>
-            <p className="footer-brand">OpenLibrary</p>
-            <p className="footer-copy">© 2026 OpenLibrary · Conocimiento libre y accesible</p>
+            <p className="footer-brand">LibroNauta</p>
+            <p className="footer-copy">© 2026 LibroNauta · Datos de Open Library</p>
           </div>
           <div style={{ textAlign: 'center' }}>
             <p className="footer-credit">Made with ♥ by LN13002 (Kevin Lemus)</p>

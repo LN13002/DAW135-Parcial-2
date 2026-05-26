@@ -22,16 +22,13 @@ const PLACEHOLDER = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 function BookCard({ book }: BookCardProps) {
   const cover = book.cover_i ? `${COVER_BASE}/${book.cover_i}-M.jpg` : PLACEHOLDER
   const authors = book.author_name?.slice(0, 2).join(', ') ?? 'Autor desconocido'
-
   const rating = book.ratings_average
     ? Math.min(5, book.ratings_average)
     : book.edition_count
     ? Math.min(5, Math.log10(book.edition_count + 1) * 2.5)
     : 0
-
-  /* pick shortest subject that's not too generic */
   const displaySubject = book.subject
-    ?.find((s) => s.length < 30 && !s.toLowerCase().includes('accessible'))
+    ?.find((subject) => subject.length < 30 && !subject.toLowerCase().includes('accessible'))
     ?? book.subject?.[0]
 
   return (
@@ -65,7 +62,7 @@ function BookCard({ book }: BookCardProps) {
           rel="noreferrer"
           className="book-card-btn"
         >
-          Ver en OpenLibrary
+          Ver en Open Library
         </a>
       </div>
     </div>
